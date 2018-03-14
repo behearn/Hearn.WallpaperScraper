@@ -1,0 +1,46 @@
+﻿<Window x:Class="Hearn.WallpaperScraper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hearn.WallpaperScraper"
+        mc:Ignorable="d"
+        Title="Wallpaper Scraper" 
+        WindowState="Maximized"
+        Name="Window">
+    <DockPanel LastChildFill="True">
+        <TextBlock Text="{Binding CurrentFile}" DockPanel.Dock="Bottom" />
+        <ListView Name="AssetList" ItemsSource="{Binding Assets}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel 
+                        HorizontalAlignment="Center"
+                        Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="{Binding PreviewWidth}" Margin="8">
+                        <Image Source="{Binding Image}" />
+                        <TextBlock Text="{Binding Dimensions}" TextAlignment="Center" />
+                        <TextBlock Text="{Binding CreatedDate, StringFormat='dd MMM yyyy'}" TextAlignment="Center" />
+                        <StackPanel.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftDoubleClick"
+                                Command="{Binding ElementName=Window, Path=DataContext.SaveImageCommand}"
+                                CommandParameter="{Binding}" />
+                        </StackPanel.InputBindings>
+                        <StackPanel.ToolTip>
+                            <TextBlock Text="{Binding Path}" />
+                        </StackPanel.ToolTip>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+    </DockPanel>
+</Window>
